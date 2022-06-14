@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('portrait')->comment('This is the path of the Speaker profile photo');
-            $table->integer('type')->comment('Define the type of Speaker Full Week or Gues');
+            $table->integer('type')->comment('Define the type of 0: Speaker Full Week, or 1: Guest');
             $table->unsignedBigInteger('event_id')->comment('This is the event identifier');
             $table->unsignedBigInteger('user_id')->comment('This is the user identifier that is related to the speaker')->nullable();
             $table->unsignedBigInteger('created_user_id')->comment('This is the identifier of the Speaker creative user (it has no relationship, it works as a bitacora)')->nullable();
