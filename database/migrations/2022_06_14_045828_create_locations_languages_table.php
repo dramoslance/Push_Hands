@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('name')->comment('Translated location name');
             $table->string('description')->comment('Description of the translated location');
-            $table->string('adrees_line')->comment('physical addres of the transmised location');
+            $table->string('address_line')->comment('physical address of the transmised location');
             $table->unsignedBigInteger('location_id')->comment('The id of the location to be translated');
             $table->unsignedBigInteger('language_id')->comment('The id of the language to translate');
             $table->unsignedBigInteger('created_user_id')->comment('The id of the user who creates the translation')->nullable();
