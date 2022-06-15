@@ -14,7 +14,10 @@ class Cluster extends Model
 
     protected $table = 'clusters';
 
-    
+    public function languages(){
+        return $this->belongsToMany(Language::class, 'clusters_languages', 'cluster_id', 'language_id');
+    }
+
     public function events()
     {
         return $this->hasMany(Event::class, 'cluster_id', 'id');
