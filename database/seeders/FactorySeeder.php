@@ -11,6 +11,7 @@ use Database\Seeders\Factory\ClusterFactorySeeder;
 use Database\Seeders\Factory\LocationFactorySeeder;
 use Database\Seeders\Factory\EventFactorySeeder;
 use Database\Seeders\Factory\SpeakerFactorySeeder;
+use Database\Seeders\Factory\ActivityFactorySeeder;
 
 class FactorySeeder extends Seeder
 {
@@ -31,6 +32,7 @@ class FactorySeeder extends Seeder
             LocationFactorySeeder::class,
             EventFactorySeeder::class,
             SpeakerFactorySeeder::class,
+            ActivityFactorySeeder::class,
         ]);
     }
 }
