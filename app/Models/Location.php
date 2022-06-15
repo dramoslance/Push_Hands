@@ -14,6 +14,9 @@ class Location extends Model
 
     protected $table = 'locations';
 
+    public function languages(){
+        return $this->belongsToMany(Language::class, 'locations_languages', 'location_id', 'language_id');
+    }
 
     public function organizer() {
         return $this->belongsTo(Organizer::class, 'organizer_id', 'id');
