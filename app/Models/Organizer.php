@@ -15,6 +15,10 @@ class Organizer extends Model
     protected $table = 'organizers';
 
 
+    public function languages(){
+        return $this->belongsToMany(Language::class, 'organizers_languages', 'organizer_id', 'language_id');
+    }
+
     public function events()
     {
         return $this->hasMany(Event::class, 'organizer_id', 'id');
