@@ -42,6 +42,10 @@ class Event extends Model
         return $this->belongsTo(Organizer::class, 'organizer_id', 'id');
     }
 
+    public function activities(){
+        return $this->hasMany(Activity::class, 'event_id', 'id');
+    }
+
     /**
      * 
      * Build the recurrent event to get the childs events
