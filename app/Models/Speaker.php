@@ -14,6 +14,9 @@ class Speaker extends Model
 
     protected $table = 'speakers';
 
+    public function languages(){
+        return $this->belongsToMany(Language::class, 'speakers_languages', 'speaker_id', 'language_id');
+    }
 
     public function event() {
         return $this->belongsTo(Event::class, 'event_id', 'id');
