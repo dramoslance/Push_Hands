@@ -30,7 +30,6 @@ return new class extends Migration
                 ->on('users')
                 ->nullable();
 
-
             $table->softDeletes();
             
             $table->timestamps();
