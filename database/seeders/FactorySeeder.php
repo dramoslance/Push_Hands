@@ -12,6 +12,7 @@ use Database\Seeders\Factory\LocationFactorySeeder;
 use Database\Seeders\Factory\EventFactorySeeder;
 use Database\Seeders\Factory\SpeakerFactorySeeder;
 use Database\Seeders\Factory\ActivityFactorySeeder;
+use Database\Seeders\Factory\LanguageFactorySeeder;
 
 class FactorySeeder extends Seeder
 {
@@ -33,6 +34,7 @@ class FactorySeeder extends Seeder
             EventFactorySeeder::class,
             SpeakerFactorySeeder::class,
             ActivityFactorySeeder::class,
+            LanguageFactorySeeder::class,
         ]);
     }
 }
