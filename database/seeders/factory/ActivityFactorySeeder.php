@@ -10,6 +10,12 @@ use App\Models\Location;
 use App\Models\Event;
 use App\Models\Cluster;
 use App\Models\Activity;
+use App\Models\Language;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+use Faker\Factory as Faker;
+
 
 class ActivityFactorySeeder extends Seeder
 {
@@ -41,12 +47,20 @@ class ActivityFactorySeeder extends Seeder
             ->create();
 
 
-    
+        $faker = Faker::create();
         foreach($events as $event) {
             
-            Activity::factory(5)
+            $activities = Activity::factory(5)
                 ->for($event)
                 ->create();
+
+            $language = Language::factory()->create();
+            foreach($activities as $activity){
+                $activity->languages()->attach($language, [
+                    'name' => $faker->name(),
+                    'description' => $faker->text($maxNbChars = 200)
+                ]);
+            }
 
         }
 
