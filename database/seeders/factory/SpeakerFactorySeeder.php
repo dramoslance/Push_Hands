@@ -12,6 +12,7 @@ use App\Models\Location;
 use App\Models\Cluster;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Language;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -54,12 +55,17 @@ class SpeakerFactorySeeder extends Seeder
             ]);
 
              // Create Speakers withou system users
-            Speaker::factory(10)
+            $speakers = Speaker::factory(10)
                 ->for($event)
                 ->create();
 
+            $language = Language::factory()->create();
+            foreach($speakers as $speaker){
+                $speaker->languages()->attach($language, [
+                    'name' => $faker->name(),
+                    'biography' => $faker->text($maxNbChars = 200)
+                ]);
+            }
         }
-
-
     }
 }
