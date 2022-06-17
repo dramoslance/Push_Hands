@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('biography')->comment('Brief biography of the speaker');
             $table->unsignedBigInteger('language_id')->comment('The language identifier that represents the translation');
             $table->unsignedBigInteger('speaker_id')->comment('The identifier of the speaker that is translated');
-            $table->unsignedBigInteger('created_user_id')->comment('This is the identifier of the translation user (it has no relationship, it works as a bitacora)')->nullable();
-            $table->unsignedBigInteger('modified_user_id')->comment('This is the identifier of the translation user (it has no relationship, it works as a bitacora)')->nullable();
+            $table->unsignedBigInteger('created_user_id')->comment('This is the identifier of user who creates the translation (it has no relationship, it works as a bitacora)')->nullable();
+            $table->unsignedBigInteger('modified_user_id')->comment('This is the identifier of user who modifies the translation (it has no relationship, it works as a bitacora)')->nullable();
 
             $table
                 ->foreign('language_id')
