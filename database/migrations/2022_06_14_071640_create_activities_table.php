@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
 
             $table->string('type')->comment('Type of activity');
-            $table->string('start_time')->comment('Activity start time');
-            $table->string('end_time')->comment('Time of finalization of the activity');
-            $table->unsignedBigInteger('event_id')->comment('This is the event identifier');
-            $table->unsignedBigInteger('created_user_id')->comment('This is the identifier of the activitie creative user (it has no relationship, it works as a bitacora)')->nullable();
-            $table->unsignedBigInteger('modified_user_id')->comment('This is the user identifier that modifies a activitie (it has no relationship, it works as a bitacora)')->nullable();
+            $table->timestamp('start_time')->comment('Activity start time');
+            $table->timestamp('end_time')->comment('Time of finalization of the activity');
+            $table->unsignedBigInteger('event_id')->comment('This is the event identifies');
+            $table->unsignedBigInteger('created_user_id')->comment('This is the identifies of the activity creative user (it has no relationship, it works as a bitacora)')->nullable();
+            $table->unsignedBigInteger('modified_user_id')->comment('This is the user identifies that modifies a activity (it has no relationship, it works as a bitacora)')->nullable();
 
             $table
                 ->foreign('event_id')

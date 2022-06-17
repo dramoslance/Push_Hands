@@ -54,7 +54,7 @@ class SpeakerFactorySeeder extends Seeder
                 'type' => $faker->randomElement([0, 1])
             ]);
 
-             // Create Speakers withou system users
+             // Create Speakers without system users
             $speakers = Speaker::factory(10)
                 ->for($event)
                 ->create();

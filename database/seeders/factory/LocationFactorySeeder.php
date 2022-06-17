@@ -35,7 +35,7 @@ class LocationFactorySeeder extends Seeder
             $location->languages()->attach($language, [
                 'name' => $faker->catchPhrase(),
                 'description' => $faker->text($maxNbChars = 20),
-                'adrees_line' => $faker->address()
+                'address_line' => $faker->address()
             ]);
         }
 

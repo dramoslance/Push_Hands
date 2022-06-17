@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('slug')->comment('This is the name friendly to be used in the URL');
-            $table->string('main_image_url')->comment('This is the main image that identifies the category of the event');
+            $table->string('main_image_url')->comment('This is the main image that identifies the category of the event')->nullable();
             $table->unsignedBigInteger('created_user_id')->comment('The id of the user who creates the cluster')->nullable();
             $table->unsignedBigInteger('modified_user_id')->comment('The id of the user who updates the cluster')->nullable();
 

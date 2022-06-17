@@ -19,6 +19,7 @@ class EventFactory extends Factory
         return [
             //
             "banner" => $this->faker->imageUrl(),
+            "slug" => $this->faker->slug(),
             "start_time" => $this->faker->dateTime(),
             "end_time" => $this->faker->dateTime(),
             "highlighted" => $this->faker->boolean(),
