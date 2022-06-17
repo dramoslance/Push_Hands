@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->string('coordinates')->comment('Google maps location');
-            $table->unsignedBigInteger('organizer_id')->comment('This is the organizer identifies that composes the locations');
-            $table->unsignedBigInteger('created_user_id')->comment('This is the identifies of the creative user of the location (it has no relationship, it works as a bitacora)');
-            $table->unsignedBigInteger('modified_user_id')->comment('This is the user identifies that modifies a location (it has no relationship, it works as a bitacora)');
+            $table->unsignedBigInteger('organizer_id')->comment('This is the organizer identifier that composes the locations');
+            $table->unsignedBigInteger('created_user_id')->comment('This is the identifier of the creative user of the location (it has no relationship, it works as a bitacora)')->nullable();
+            $table->unsignedBigInteger('modified_user_id')->comment('This is the user identifier that modifies a location (it has no relationship, it works as a bitacora)')->nullable();
             
             $table
                 ->foreign('organizer_id')
