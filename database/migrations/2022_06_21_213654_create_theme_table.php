@@ -23,7 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('created_user_id')->comment('The identifier of the user creating the theme')->nullable();
             $table->unsignedBigInteger('modified_user_id')->comment('The identifier of the user modifying the theme')->nullable();
 
-            $table->softDeletes();
             $table->timestamps();
         });
     }
