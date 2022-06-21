@@ -29,7 +29,7 @@ return new class extends Migration
             $table
                 ->foreign('location_id')
                 ->references('id')
-                ->on('location');
+                ->on('locations');
 
             $table->softDeletes();
 
