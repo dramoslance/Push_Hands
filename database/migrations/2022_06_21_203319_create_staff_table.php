@@ -21,6 +21,16 @@ return new class extends Migration
             $table->unsignedBigInteger('created_user_id')->comment('This is the id of the user that creates the staff in the system');
             $table->unsignedBigInteger('modified_user_id')->comment('This is the id of the user that updates the staff in the system');
 
+            $table
+                ->foreign('instructor_id')
+                ->references('id')
+                ->on('instructors')
+
+            $table
+                ->foreign('location_id')
+                ->references('id')
+                ->on('location')
+
             $table->softDeletes();
 
             $table->timestamps();
