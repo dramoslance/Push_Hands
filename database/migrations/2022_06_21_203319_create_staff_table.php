@@ -24,12 +24,12 @@ return new class extends Migration
             $table
                 ->foreign('instructor_id')
                 ->references('id')
-                ->on('instructors')
+                ->on('instructors');
 
             $table
                 ->foreign('location_id')
                 ->references('id')
-                ->on('location')
+                ->on('location');
 
             $table->softDeletes();
 
