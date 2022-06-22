@@ -15,6 +15,9 @@ class Location extends Model
     protected $table = 'locations';
 
     public function languages(){
+        return $this->belongsToMany(Instructor::class, 'staff', 'location_id', 'instructor_id');
+    }
+    public function staff(){
         return $this->belongsToMany(Language::class, 'locations_languages', 'location_id', 'language_id');
     }
 
@@ -25,5 +28,8 @@ class Location extends Model
     public function events() {
         return $this->hasMany(Event::class, 'location_id', 'id');
     }
+    
+   
+
 
 }
