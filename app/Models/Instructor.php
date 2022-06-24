@@ -12,14 +12,14 @@ class Instructor extends Model
 
     use SoftDeletes;
     
-    protected $table = 'instructors'
+    protected $table = 'instructors';
 
     public function locations () {
-        return $this->belongsToMany(Location::class, 'staff','instructor_id','location_id')
+        return $this->belongsToMany(Location::class, 'staff','instructor_id','location_id');
     }
     
     public function events () {
-        return $this->belongsToMany(Event::class, 'speakers','instructor_id','event_id')
+        return $this->belongsToMany(Event::class, 'speakers','instructor_id','event_id');
     }
 
     public function user(){

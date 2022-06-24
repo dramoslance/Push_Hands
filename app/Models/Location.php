@@ -14,7 +14,7 @@ class Location extends Model
 
     protected $table = 'locations';
 
-    public function staff(){
+    public function instructors(){
         return $this->belongsToMany(Instructor::class, 'staff', 'location_id', 'instructor_id');
     }
     public function languages(){
