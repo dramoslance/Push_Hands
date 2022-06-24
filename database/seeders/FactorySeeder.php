@@ -13,6 +13,10 @@ use Database\Seeders\Factory\EventFactorySeeder;
 use Database\Seeders\Factory\SpeakerFactorySeeder;
 use Database\Seeders\Factory\ActivityFactorySeeder;
 use Database\Seeders\Factory\LanguageFactorySeeder;
+use Database\Seeders\Factory\InstructorFactorySeeder;
+use Database\Seeders\Factory\StaffFactorySeeder;
+use Database\Seeders\Factory\MemberFactorySeeder;
+use Database\Seeders\Factory\ThemeFactorySeeder;
 
 class FactorySeeder extends Seeder
 {
@@ -27,11 +31,16 @@ class FactorySeeder extends Seeder
             UserFactorySeeder::class,
             OrganizerFactorySeeder::class,
             ClusterFactorySeeder::class,
+            InstructorFactorySeeder::class,
             LocationFactorySeeder::class,
             EventFactorySeeder::class,
             SpeakerFactorySeeder::class,
             ActivityFactorySeeder::class,
             LanguageFactorySeeder::class,
+            StaffFactorySeeder::class,
+            MemberFactorySeeder::class,
+            ThemeFactorySeeder::class,
+            
         ]);
     }
 }

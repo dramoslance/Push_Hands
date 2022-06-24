@@ -27,13 +27,6 @@ class ActivityFactorySeeder extends Seeder
     public function run()
     {
      
-        
-        // $event = Event::factory()->create();
-
-        //  Avtivity::factory(5)
-        //     ->for($event)
-        //     ->create();
-
         $organizer = Organizer::factory()->create();
 
         $events = Event::factory(5)

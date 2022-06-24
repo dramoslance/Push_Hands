@@ -23,6 +23,16 @@ return new class extends Migration
 
             $table->unique(['user_id','organizer_id']);
 
+            $table  
+                ->foreign('user_id')
+                ->references('id')
+                ->on('users');
+
+            $table  
+                ->foreign('organizer_id')
+                ->references('id')
+                ->on('organizers');
+
             $table->softDeletes();
 
             $table->timestamps();

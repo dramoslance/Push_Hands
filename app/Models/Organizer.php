@@ -19,18 +19,18 @@ class Organizer extends Model
         return $this->belongsToMany(Language::class, 'organizers_languages', 'organizer_id', 'language_id');
     }
 
+    public function users() {
+        return $this->belongsToMany(User::class, 'members','organizer_id', 'user_id');
+    }
+
     public function events()
     {
         return $this->hasMany(Event::class, 'organizer_id', 'id');
     }
-
 
     public function locations()
     {
         return $this->hasMany(Location::class, 'organizer_id', 'id');
     }
 
-    public function user() {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
 }
