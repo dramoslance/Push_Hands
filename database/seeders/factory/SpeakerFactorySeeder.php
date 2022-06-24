@@ -12,6 +12,7 @@ use App\Models\Location;
 use App\Models\Cluster;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Instructor;
 use App\Models\Language;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -47,19 +48,27 @@ class SpeakerFactorySeeder extends Seeder
         foreach($events as $event) {
             
         
-            // Create Speakers with system users 
+            // Create Speakers with system relation 
             $user = User::factory()->create();
-            $event->users()->attach($user, [
+            
+            $instructor = Instructor::factory()
+            ->for($user)
+            ->create();
+            
+            $event->instructors()->attach($instructor, [
                 'portrait' => $faker->imageUrl(100, 100),
                 'type' => $faker->randomElement([0, 1])
-            ]);
-
-             // Create Speakers without system users
+                ]);
+                
+                
+            // Create Speakers with system model 
             $speakers = Speaker::factory(10)
                 ->for($event)
+                ->for($instructor)
                 ->create();
 
             $language = Language::factory()->create();
+
             foreach($speakers as $speaker){
                 $speaker->languages()->attach($language, [
                     'name' => $faker->name(),
