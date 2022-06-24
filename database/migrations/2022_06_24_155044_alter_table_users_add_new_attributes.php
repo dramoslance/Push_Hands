@@ -29,23 +29,26 @@ return new class extends Migration
                 ->comment('This is the username of the user')
                 ->nullable();
 
-            $table->time('birth_date')
+            $table->timestamp('birth_date')
                 ->after('username')
                 ->comment('This is the users date of birth');
 
             $table->string('portrait')
                 ->after('username')
-                ->comment('This is the users cover photo');
+                ->comment('This is the users cover photo')
+                ->nullable();
 
             $table->string('password')
                 ->after('email')
                 ->nullable();
 
             $table->unsignedBigInteger('created_user_id')
+                ->after('remember_token')
                 ->comment('This is the identifier of the user who creates the translation(it has no relationship, it works as a bitacora)')
                 ->nullable();
 
             $table->unsignedBigInteger('modified_user_id')
+                ->after('created_user_id')
                 ->comment('This is the identifier of the user who modifies the translation (it has no relationship, it works as a bitacora)')
                 ->nullable();
         });
