@@ -20,7 +20,7 @@ class ThemeFactory extends Factory
             'name' => $this->faker->colorName(),
             'is_default' => $this->faker->boolean(),
             'entity_id' => $this->faker->randomElement([1, 10]),
-            'entity_name' => $this->faker->safeColorName()
+            'entity_name' => $this->faker->randomElement(['cluster', 'event']),
         ];
     }
 }
