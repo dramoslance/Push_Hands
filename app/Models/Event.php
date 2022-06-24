@@ -25,8 +25,8 @@ class Event extends Model
     protected $table = 'events';
 
 
-    public function users(){
-        return $this->belongsToMany(User::class, 'speakers', 'event_id', 'user_id');
+    public function instructors(){
+        return $this->belongsToMany(Instructor::class, 'speakers', 'event_id', 'instructor_id');
     }
 
     public function languages(){

@@ -18,8 +18,8 @@ return new class extends Migration
             
             $table->string('grade')->comment('This is the academic grade of the instructor')->nullable();
             $table->unsignedBigInteger('user_id')->comment('This is the id of the user that identifies the instructor in the system');
-            $table->unsignedBigInteger('created_user_id')->comment('This is the id of the user that creates the instructor in the system');
-            $table->unsignedBigInteger('modified_user_id')->comment('This is the id of the user that updates the instructor in the system');
+            $table->unsignedBigInteger('created_user_id')->comment('This is the id of the user that creates the instructor in the system')->nullable();
+            $table->unsignedBigInteger('modified_user_id')->comment('This is the id of the user that updates the instructor in the system')->nullable();
 
 
             $table->foreign('user_id')

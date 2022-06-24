@@ -43,12 +43,14 @@ class User extends Authenticatable
     ];
 
 
-    public function organizer(){
-        return $this->hasOne(Organizer::class, 'user_id', 'id');
+ 
+    public function instructors() {
+        return $this->hasMany(Instructor::class, 'instructor_id', 'id');
     }
 
-    public function events()
+   
+    public function organizers()
     {
-        return $this->belongsToMany(Event::class, 'speakers', 'user_id', 'event_id');
+        return $this->belongsToMany(Organizer::class, 'members', 'user_id', 'organizer_id');
     }
 }
