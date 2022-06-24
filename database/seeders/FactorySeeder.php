@@ -23,9 +23,6 @@ class FactorySeeder extends Seeder
      */
     public function run()
     {
-        
-
-        
         $this->call([
             UserFactorySeeder::class,
             OrganizerFactorySeeder::class,
