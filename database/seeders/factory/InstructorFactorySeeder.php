@@ -23,11 +23,5 @@ class InstructorFactorySeeder extends Seeder
        Instructor::factory(6)
                 ->for($user)
                 ->create();
-
-    //    foreach($instructors as $instructor){
-    //          $instructor->user()->associate(User::factory()->create());
-    //          $instructor->save();
-    //    }
-    
     }
 }

@@ -36,8 +36,6 @@ class OrganizerFactorySeeder extends Seeder
     
         $language= Language::factory()->create();
         foreach($organizers as $organizer) {
-            // $organizer->user()->associate(User::factory()->create());
-            // $organizer->save();
 
             $organizer->languages()->attach($language, [
                 'name' => $faker->name(),
