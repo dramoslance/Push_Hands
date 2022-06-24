@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
+        $this->call([
+            FactorySeeder::class,
+            LocalSeeder::class,
+        ]);
     }
 }
