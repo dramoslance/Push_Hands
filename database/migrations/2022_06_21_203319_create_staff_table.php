@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->unsignedBigInteger('location_id')->comment('This is the identifier of the location that represents the staff list');
             $table->unsignedBigInteger('instructor_id')->comment('This is the identifier of the instructor that represents the staff list');
-            $table->unsignedBigInteger('created_user_id')->comment('This is the id of the user that creates the staff in the system');
-            $table->unsignedBigInteger('modified_user_id')->comment('This is the id of the user that updates the staff in the system');
+            $table->unsignedBigInteger('created_user_id')->comment('This is the id of the user that creates the staff in the system')->nullable();
+            $table->unsignedBigInteger('modified_user_id')->comment('This is the id of the user that updates the staff in the system')->nullable();
 
             $table
                 ->foreign('instructor_id')
