@@ -14,10 +14,10 @@ class Location extends Model
 
     protected $table = 'locations';
 
-    public function languages(){
+    public function staff(){
         return $this->belongsToMany(Instructor::class, 'staff', 'location_id', 'instructor_id');
     }
-    public function staff(){
+    public function languages(){
         return $this->belongsToMany(Language::class, 'locations_languages', 'location_id', 'language_id');
     }
 
