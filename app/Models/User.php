@@ -6,10 +6,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -20,7 +20,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'lastname',
+        'birth_date',
+        'portrait',
         'email',
+        'username',
         'password',
     ];
 
@@ -45,11 +49,19 @@ class User extends Authenticatable
 
     public function instructors()
     {
-        return $this->hasMany(Instructor::class, 'instructor_id', 'id');
+        return $this->hasMany(Instructor::class, 'user_id', 'id');
     }
 
     public function organizers()
     {
         return $this->belongsToMany(Organizer::class, 'members', 'user_id', 'organizer_id');
+    }
+
+    public function isConfig(): bool
+    {
+        if ($this->username === null || $this->password === null) {
+            return false;
+        }
+        return true;
     }
 }
