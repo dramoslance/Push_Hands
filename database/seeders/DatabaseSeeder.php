@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
-use Carbon\Factory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+// use Carbon\Factory;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
+use Database\Seeders\Factory\RunSeeder as FactorySeeder;
+use Database\Seeders\RolePermission\RunSeeder as RolePermissionSeeder;
+use Database\Seeders\Auth\RunSeeder as AuthSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +19,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (env('APP_ENV') !== 'production') {
-            $this->call([
-                FactorySeeder::class,
-                LocalSeeder::class,
-            ]);
-        }
+        $this->call([
+            RolePermissionSeeder::class,
+            AuthSeeder::class,
+        ]);
+
+        env('APP_ENV') === 'local' && $this->call(FactorySeeder::class);
+        // env('APP_ENV') === 'production' && $this->call([]);
     }
 }
