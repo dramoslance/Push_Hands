@@ -14,6 +14,15 @@ class Organizer extends Model
 
     protected $table = 'organizers';
 
+    protected $fillable = [
+        'portrait',
+        'email',
+        'phone',
+        'website',
+        'user_id',
+        'created_user_id',
+        'modified_user_id'
+    ];
 
     public function languages(){
         return $this->belongsToMany(Language::class, 'organizers_languages', 'organizer_id', 'language_id');
