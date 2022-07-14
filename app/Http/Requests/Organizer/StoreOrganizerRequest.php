@@ -24,7 +24,10 @@ class StoreOrganizerRequest extends FormRequest
     public function rules()
     {
         return [
+            'language_id' => 'required|numeric|exists:App\Models\Language,id',
             'portrait' => 'string|max:255',
+            'name' => 'string|required',
+            'description' => 'string|required',
             'email' => 'string|required|email|unique:organizers',
             'phone' => 'string|required|unique:organizers',
             'website' => 'string'

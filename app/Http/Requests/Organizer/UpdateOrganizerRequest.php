@@ -26,6 +26,8 @@ class UpdateOrganizerRequest extends FormRequest
         return [
             'organizer_id' => 'required|numeric|exists:App\Models\Organizer,id',
             'portrait' => 'string|max:255',
+            'name' => 'string|required',
+            'description' => 'string|required',
             'email' => 'string|required|email|unique:organizers,email,'. $this->organizer_id,
             'phone' => 'string|required|unique:organizers,phone,'.$this->organizer_id,
             'website' => 'string'
