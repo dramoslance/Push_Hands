@@ -4,7 +4,7 @@ namespace Database\Seeders\Auth;
 
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-// use Interface\RolePermission\PermissionsEntity;
+use Interface\RolePermission\PermissionsEntity;
 use Interface\RolePermission\RolesEntity;
 use Codedungeon\PHPCliColors\Color;
 
@@ -45,12 +45,13 @@ class SuperAdminSeeder extends Seeder
         $admin->assignRole(RolesEntity::SUPER_ADMIN);
         echo Color::GREEN, 'Success: ', Color::WHITE, 'Registered super admin user.', PHP_EOL;
 
-        // $admin->givePermissionTo(PermissionsEntity::USER_READ);
-        // $admin->givePermissionTo(PermissionsEntity::USER_WRITE);
-        // $admin->givePermissionTo(PermissionsEntity::USER_EXECUTE);
+        $admin->givePermissionTo(PermissionsEntity::ADMIN_ALL);
+        $admin->givePermissionTo(PermissionsEntity::ADMIN_READ);
+        $admin->givePermissionTo(PermissionsEntity::ADMIN_WRITE);
+        $admin->givePermissionTo(PermissionsEntity::ADMIN_EXECUTE);
 
-        // $admin->givePermissionTo(PermissionsEntity::ADMIN_READ);
-        // $admin->givePermissionTo(PermissionsEntity::ADMIN_WRITE);
-        // $admin->givePermissionTo(PermissionsEntity::ADMIN_EXECUTE);
+        $admin->givePermissionTo(PermissionsEntity::USER_READ);
+        $admin->givePermissionTo(PermissionsEntity::USER_WRITE);
+        $admin->givePermissionTo(PermissionsEntity::USER_EXECUTE);
     }
 }
