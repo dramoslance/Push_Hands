@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Organizer\StoreOrganizerRequest;
 use App\Http\Requests\Organizer\UpdateOrganizerRequest;
+use App\Models\Language;
 use App\Models\Organizer;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,8 @@ class OrganizerController extends Controller
     public function store(StoreOrganizerRequest $request)
     {
         
+        $language = Language::findOrFail($request->language_id);
+        
         $organizer = Organizer::create([
             'portrait' => $request->portrait,
             'email'=> $request->email,
@@ -43,6 +46,11 @@ class OrganizerController extends Controller
             'user_id'=> $request->user_id,
             'created_user_id' => $request->created_user_id,
             'modified_user_id'=> $request->modified_user_id
+        ]);
+        
+        $organizer->languages()->attach($language, [
+            'name' => $request->name,
+            'description' => $request->description,   
         ]);
 
        return $organizer;

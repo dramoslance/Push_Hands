@@ -16,16 +16,19 @@ class Organizer extends Model
 
     protected $fillable = [
         'portrait',
+        'name',
+        'description',
         'email',
         'phone',
         'website',
         'user_id',
+        'language_id',
         'created_user_id',
         'modified_user_id'
     ];
 
     public function languages(){
-        return $this->belongsToMany(Language::class, 'organizers_languages', 'organizer_id', 'language_id');
+        return $this->belongsToMany(Language::class, 'organizers_languages', 'organizer_id', 'language_id')->withTimestamps();
     }
 
     public function users() {
