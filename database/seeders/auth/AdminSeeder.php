@@ -42,7 +42,7 @@ class AdminSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
         ]);
 
-        $admin->assignRole(RolesEntity::SUPER_ADMIN);
+        $admin->assignRole(RolesEntity::ADMIN);
         $admin->givePermissionTo(PermissionsEntity::ADMIN_READ);
         $admin->givePermissionTo(PermissionsEntity::ADMIN_WRITE);
         $admin->givePermissionTo(PermissionsEntity::ADMIN_EXECUTE);
