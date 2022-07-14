@@ -20,15 +20,24 @@ class PermissionsEntity extends EntityBase
     public static function get_elements(): array
     {
         $array = [
-            ['guard_name' => self::GUARD_NAME_ADMIN, 'name' => self::ADMIN_ALL],
-            ['guard_name' => self::GUARD_NAME_ADMIN, 'name' => self::ADMIN_READ],
-            ['guard_name' => self::GUARD_NAME_ADMIN, 'name' => self::ADMIN_WRITE],
-            ['guard_name' => self::GUARD_NAME_ADMIN, 'name' => self::ADMIN_EXECUTE],
-            ['guard_name' => self::GUARD_NAME_WEB, 'name' => self::USER_READ],
-            ['guard_name' => self::GUARD_NAME_WEB, 'name' => self::USER_WRITE],
-            ['guard_name' => self::GUARD_NAME_WEB, 'name' => self::USER_EXECUTE],
+            ['guard_name' => self::GUARD_NAME_API, 'name' => self::ADMIN_ALL],
+            ['guard_name' => self::GUARD_NAME_API, 'name' => self::ADMIN_READ],
+            ['guard_name' => self::GUARD_NAME_API, 'name' => self::ADMIN_WRITE],
+            ['guard_name' => self::GUARD_NAME_API, 'name' => self::ADMIN_EXECUTE],
+            ['guard_name' => self::GUARD_NAME_API, 'name' => self::USER_READ],
+            ['guard_name' => self::GUARD_NAME_API, 'name' => self::USER_WRITE],
+            ['guard_name' => self::GUARD_NAME_API, 'name' => self::USER_EXECUTE],
         ];
 
         return $array;
+    }
+
+    public static function permission_find(string $name): bool
+    {
+        if (in_array($name, self::array_entity(self::get_elements()))) {
+            return true;
+        }
+
+        return false;
     }
 }
