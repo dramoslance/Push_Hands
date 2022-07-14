@@ -1,12 +1,10 @@
 <?php
 
-namespace Database\Seeders\Local;
+namespace Database\Seeders\RolePermission;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 use Spatie\Permission\Models\Role;
-
 use Interface\RolePermission\PermissionsEntity;
 use Interface\RolePermission\RolesEntity;
 
@@ -23,9 +21,9 @@ class RoleHasPermissionSeeder extends Seeder
          * Find roles.
          * ------------------------------------------------------------------------------------------------*/
 
-        $role_super_admin = Role::findByName(RolesEntity::SUPER_ADMIN, RolesEntity::GUARD_NAME_ADMIN);
-        $role_admin = Role::findByName(RolesEntity::ADMIN, RolesEntity::GUARD_NAME_ADMIN);
-        $role_user = Role::findByName(RolesEntity::USER, RolesEntity::GUARD_NAME_WEB);
+        $role_super_admin = Role::findByName(RolesEntity::SUPER_ADMIN, RolesEntity::GUARD_NAME_API);
+        $role_admin = Role::findByName(RolesEntity::ADMIN, RolesEntity::GUARD_NAME_API);
+        $role_user = Role::findByName(RolesEntity::USER, RolesEntity::GUARD_NAME_API);
 
         /** -----------------------------------------------------------------------------------------------
          * Assign permissions to roles.

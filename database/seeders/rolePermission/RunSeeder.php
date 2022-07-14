@@ -1,15 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\RolePermission;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use Database\Seeders\Local\PermissionSeeder;
-use Database\Seeders\Local\RoleSeeder;
-use Database\Seeders\Local\RoleHasPermissionSeeder;
-
-class LocalSeeder extends Seeder
+class RunSeeder extends Seeder
 {
     /**
      * Run the database seeds.
