@@ -35,25 +35,25 @@ class OrganizerController extends Controller
      */
     public function store(StoreOrganizerRequest $request)
     {
-        
+
         $language = Language::findOrFail($request->language_id);
-        
+
         $organizer = Organizer::create([
             'portrait' => $request->portrait,
-            'email'=> $request->email,
-            'phone'=> $request->phone,
+            'email' => $request->email,
+            'phone' => $request->phone,
             'website' => $request->website,
-            'user_id'=> $request->user_id,
+            'user_id' => $request->user_id,
             'created_user_id' => $request->created_user_id,
-            'modified_user_id'=> $request->modified_user_id
-        ]);
-        
-        $organizer->languages()->attach($language, [
-            'name' => $request->name,
-            'description' => $request->description,   
+            'modified_user_id' => $request->modified_user_id
         ]);
 
-       return $organizer;
+        $organizer->languages()->attach($language, [
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return $organizer;
     }
 
     /**
@@ -62,13 +62,21 @@ class OrganizerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($language_id, $id)
     {
         $organizer = Organizer::findOrFail($id);
-        
+
+        $organizer_language = Organizer::find($id)
+            ->languages()
+            ->where('language_id', $language_id)
+            ->get();
+
         return response()->json([
             'status' => 'ok',
-            'data' => $organizer
+            'data' => response()->json([
+                'organizer' => $organizer,
+                'organizer_language' =>$organizer_language[0]->pivot
+            ])
         ], 200);
     }
 
@@ -82,15 +90,30 @@ class OrganizerController extends Controller
     public function update(UpdateOrganizerRequest $request)
     {
         $organizer = Organizer::findOrfail($request->organizer_id);
-        
+
+        $language = Language::findOrFail($request->language_id);
+
         $organizer->update([
             'portrait' => $request->portrait,
-            'email'=> $request->email,
-            'phone'=> $request->phone,
+            'email' => $request->email,
+            'phone' => $request->phone,
             'website' => $request->website
         ]);
 
-        return $organizer;
+        $languageUpadated =  $organizer->languages()->updateExistingPivot($language, [
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'data' => json_encode(
+                [
+                    'organizer' => $organizer,
+                    'organizer_language' => $languageUpadated
+                ]),
+            'message'=> 'Organizer updated succesfully'
+        ], 200);
     }
 
     /**
@@ -101,17 +124,17 @@ class OrganizerController extends Controller
      */
     public function destroy($id)
     {
-       $organizer = Organizer::destroy($id);
-
-        if($organizer){
+        $organizer = Organizer::destroy($id);
+        
+        if ($organizer) {
             return response()->json([
-                "status"=> "ok",
+                "status" => "ok",
                 "message" => "The organizer with the id: ${id} has been deleted"
-            ],200);
+            ], 200);
         }
         return response()->json([
-            "status"=> "false",
+            "status" => "false",
             "message" => "The organizer with the id: ${id} does not exist"
-        ],404);
+        ], 404);
     }
 }
