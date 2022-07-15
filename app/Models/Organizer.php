@@ -28,7 +28,9 @@ class Organizer extends Model
     ];
 
     public function languages(){
-        return $this->belongsToMany(Language::class, 'organizers_languages', 'organizer_id', 'language_id')->withTimestamps();
+        return $this->belongsToMany(Language::class, 'organizers_languages', 'organizer_id', 'language_id')
+            ->withPivot(['name','description'])
+            ->withTimestamps();
     }
 
     public function users() {
