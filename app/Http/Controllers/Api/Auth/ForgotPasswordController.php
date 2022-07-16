@@ -38,7 +38,7 @@ class ForgotPasswordController extends ApiController
         ]);
 
         $mail_data = [
-            'title' => 'Forget user password',
+            'title' => 'Forgot user password',
             'subject' => 'Reset Password',
             'body' => 'This is for testing email using smtp.',
             'view' => 'templateMail',
