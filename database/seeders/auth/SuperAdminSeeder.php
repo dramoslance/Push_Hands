@@ -38,7 +38,7 @@ class SuperAdminSeeder extends Seeder
             'birth_date' => Carbon::now(),
             'email' => $data_env_user['SUPER_ADMIN_EMAIL'],
             'username' => $data_env_user['SUPER_ADMIN_USERNAME'],
-            'password' => Hash::make($data_env_user['ADMIN_PASUPER_ADMIN_PASSWORDSSWORD']),
+            'password' => Hash::make($data_env_user['SUPER_ADMIN_PASSWORD']),
             'email_verified_at' => Carbon::now(),
         ]);
 
