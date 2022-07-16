@@ -2,12 +2,12 @@
 
 namespace Database\Seeders\Auth;
 
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 use Interface\RolePermission\PermissionsEntity;
 use Interface\RolePermission\RolesEntity;
 use Codedungeon\PHPCliColors\Color;
-
+use Carbon\Carbon;
 use App\Models\User;
 
 class AdminSeeder extends Seeder
@@ -38,7 +38,7 @@ class AdminSeeder extends Seeder
             'birth_date' => Carbon::now(),
             'email' => $data_env_user['ADMIN_EMAIL'],
             'username' => $data_env_user['ADMIN_USERNAME'],
-            'password' => bcrypt($data_env_user['ADMIN_PASSWORD']),
+            'password' => Hash::make($data_env_user['ADMIN_PASSWORD']),
             'email_verified_at' => Carbon::now(),
         ]);
 
