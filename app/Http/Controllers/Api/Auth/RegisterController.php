@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Interface\RolePermission\RolesEntity;
 use Interface\RolePermission\PermissionsEntity;
 use App\Models\User;
@@ -28,7 +29,7 @@ class RegisterController extends ApiController
         }
 
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
+        $input['password'] = Hash::make($input['password']);
 
         $user = User::create($input);
 
