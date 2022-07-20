@@ -62,20 +62,40 @@ class OrganizerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($language_id, $id)
+    public function show($id, Request $request)
     {
-        $organizer = Organizer::findOrFail($id);
 
-        $organizer_language = Organizer::find($id)
-            ->languages()
-            ->where('language_id', $language_id)
-            ->get();
+        //todo: sustituir por el valor por defecto, dependiendo del enfoque definido, variable de entorno, o idioma preferido de usuario
+
+        $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
+        $organizer = Organizer::where([
+                            'id' => $id
+                        ])
+                        ->with(['languages' => function($query) use ($iso_code) {
+                            $query->where('iso_code', $iso_code)->first();
+                        }])
+                        ->first();
+
+        if(count($organizer->languages) === 0)
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Organizer doesn\'t not have translation in that language.'
+            ], 422);
+
+        $organizer_json = [
+            'id' => $organizer->id,
+            'name' => $organizer->languages[0]->pivot->name,
+            'description' => $organizer->languages[0]->pivot->description,
+            'portrait' => $organizer->portrait,
+            'email' => $organizer->email,
+            'phone' => $organizer->phone,
+            'website' => $organizer->website
+        ];
 
         return response()->json([
             'status' => 'ok',
             'data' => response()->json([
-                'organizer' => $organizer,
-                'organizer_language' =>$organizer_language[0]->pivot
+                'organizer' => $organizer_json,
             ])
         ], 200);
     }
