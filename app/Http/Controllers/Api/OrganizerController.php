@@ -8,7 +8,7 @@ use App\Http\Requests\Organizer\UpdateOrganizerRequest;
 use App\Models\Language;
 use App\Models\Organizer;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Arr;
 
 class OrganizerController extends Controller
 {
@@ -17,13 +17,42 @@ class OrganizerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
         $organizers = Organizer::all();
+        
+        $language = Language::where([
+            'iso_code' => $iso_code
+        ])
+        ->first();
+     
+        foreach($organizers as $key =>$organizer){
+            $organizer_language = Organizer::find($organizer->id)
+                ->languages()
+                ->where('language_id', $language->id)
+                ->get();
 
+            $orga[$key] = [
+            'id' => $organizer->id,
+            'portrait' => $organizer->portrait,
+            'email' => $organizer->email,
+            'phone' => $organizer->phone,
+            'website' => $organizer->website
+            ];
+
+            if(count($organizer_language)>0){
+                $orga[$key] =Arr::add($orga[$key],'name',$organizer_language[0]->pivot->name);
+                $orga[$key] =Arr::add($orga[$key],'description',$organizer_language[0]->pivot->description);
+            }else{
+                $orga[$key] =Arr::add($orga[$key],'name','');
+                $orga[$key] =Arr::add($orga[$key],'description','');
+            }
+        }
+ 
         return response()->json([
             'status' => 'ok',
-            'data' => $organizers
+            'data' => $orga
         ], 200);
     }
 
@@ -35,8 +64,12 @@ class OrganizerController extends Controller
      */
     public function store(StoreOrganizerRequest $request)
     {
-
-        $language = Language::findOrFail($request->language_id);
+        $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
+        
+        $language = Language::where([
+            'iso_code' => $iso_code
+        ])
+        ->first();
 
         $organizer = Organizer::create([
             'portrait' => $request->portrait,
@@ -44,7 +77,7 @@ class OrganizerController extends Controller
             'phone' => $request->phone,
             'website' => $request->website,
             'user_id' => $request->user_id,
-            'created_user_id' => $request->created_user_id,
+            'created_user_id' =>  $request->created_user_id,
             'modified_user_id' => $request->modified_user_id
         ]);
 
@@ -109,30 +142,35 @@ class OrganizerController extends Controller
      */
     public function update(UpdateOrganizerRequest $request)
     {
-        $organizer = Organizer::findOrfail($request->organizer_id);
 
-        $language = Language::findOrFail($request->language_id);
+        $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
+        
+        $organizer = Organizer::where([
+                'id' => $request->input('organizer_id')
+            ])
+            ->with(['languages' => function($query) use ($iso_code) {
+                $query->where('iso_code', $iso_code)->first();
+            }])
+            ->first();
 
-        $organizer->update([
-            'portrait' => $request->portrait,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'website' => $request->website
+         $organizer->update([
+            'portrait' => $request->input('portrait'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'website' => $request->input('website'),
         ]);
 
-        $languageUpadated =  $organizer->languages()->updateExistingPivot($language, [
-            'name' => $request->name,
-            'description' => $request->description
+
+        $organizer->languages()->updateExistingPivot($organizer->languages[0]->id, [
+            'name' => $request->input('name'),
+            'description' => $request->input('description')
         ]);
+
+        $organizer_updated = $organizer->languages[0]->pivot->name;
 
         return response()->json([
             'status' => 'ok',
-            'data' => json_encode(
-                [
-                    'organizer' => $organizer,
-                    'organizer_language' => $languageUpadated
-                ]),
-            'message'=> 'Organizer updated succesfully'
+            'message'=> "Organizer ${organizer_updated} updated succesfully"
         ], 200);
     }
 
