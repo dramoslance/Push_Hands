@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Organizer\StoreOrganizerRequest;
 use App\Http\Requests\Organizer\UpdateOrganizerRequest;
+use App\Http\Requests\Organizer\StoreTranslationOrganizerRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Organizer;
 use App\Models\Language;
@@ -31,27 +32,26 @@ class OrganizerController extends ApiController
 
         $organizers = Organizer::all();
 
+        $orga = [];
+
         foreach ($organizers as $key => $organizer) {
             $organizer_language = Organizer::find($organizer->id)
                 ->languages()
                 ->where('language_id', $language->id)
                 ->get();
-
-            $orga[$key] = [
-                'id' => $organizer->id,
-                'portrait' => $organizer->portrait,
-                'email' => $organizer->email,
-                'phone' => $organizer->phone,
-                'website' => $organizer->website
-            ];
-
+           
             if (count($organizer_language) > 0) {
-                $orga[$key] = Arr::add($orga[$key], 'name', $organizer_language[0]->pivot->name);
-                $orga[$key] = Arr::add($orga[$key], 'description', $organizer_language[0]->pivot->description);
-            } else {
-                $orga[$key] = Arr::add($orga[$key], 'name', '');
-                $orga[$key] = Arr::add($orga[$key], 'description', '');
-            }
+                return $organizer_language;
+                $orga['organizers'][] = [
+                    'id' => $organizer->id,
+                    'portrait' => $organizer->portrait,
+                    'name'=> $organizer_language[0]->pivot->name,
+                    'description'=> $organizer_language[0]->pivot->description,
+                    'email' => $organizer->email,
+                    'phone' => $organizer->phone,
+                    'website' => $organizer->website
+                ];
+            } 
         }
 
         return $this->sendResponse($orga, 'User register successfully.');
@@ -65,12 +65,14 @@ class OrganizerController extends ApiController
      */
     public function store(StoreOrganizerRequest $request)
     {
-        $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
+        // $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
 
-        $language = Language::where([
-            'iso_code' => $iso_code
-        ])
-            ->first();
+        // $language = Language::where([
+        //     'iso_code' => $iso_code
+        // ])
+        //     ->first();
+
+        $language = $this->getLanguageModel($request->input('lang_code'));
 
         $organizer = Organizer::create([
             'portrait' => $request->portrait,
@@ -87,7 +89,26 @@ class OrganizerController extends ApiController
             'description' => $request->description,
         ]);
 
-        return $organizer;
+        return $this->sendResponse($organizer, 'User register successfully.');
+    }
+    /**
+     * Store a newly traduction created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeOrganizerTranslation(StoreTranslationOrganizerRequest $request)
+    {
+        $language = $this->getLanguageModel($request->input('lang_code'));
+
+        $organizer = Organizer::find($request->input('organizer_id'));
+
+        $organizer->languages()->attach($language, [
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return $this->sendResponse($organizer, 'Translation of organization created successfully');
     }
 
     /**
@@ -101,7 +122,7 @@ class OrganizerController extends ApiController
 
         //todo: sustituir por el valor por defecto, dependiendo del enfoque definido, variable de entorno, o idioma preferido de usuario
 
-        $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
+        $iso_code = $request->input('lang_code') ?  $request->input('lang_code') : 'ro_MD';
         $organizer = Organizer::where([
             'id' => $id
         ])
@@ -148,7 +169,7 @@ class OrganizerController extends ApiController
 
         $organizer = Organizer::where([
             'id' => $request->input('organizer_id')
-        ])
+            ])
             ->with(['languages' => function ($query) use ($iso_code) {
                 $query->where('iso_code', $iso_code)->first();
             }])
@@ -160,7 +181,6 @@ class OrganizerController extends ApiController
             'phone' => $request->input('phone'),
             'website' => $request->input('website'),
         ]);
-
 
         $organizer->languages()->updateExistingPivot($organizer->languages[0]->id, [
             'name' => $request->input('name'),
