@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Organizer\StoreOrganizerRequest;
 use App\Http\Requests\Organizer\UpdateOrganizerRequest;
-use App\Models\Language;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Organizer;
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
-class OrganizerController extends Controller
+class OrganizerController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -19,41 +19,42 @@ class OrganizerController extends Controller
      */
     public function index(Request $request)
     {
-        $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
+        $validator = Validator::make($request->all(), [
+            'lang_code' => 'string|exists:App\Models\Language,iso_code',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $language = $this->getLanguageModel($request->input('lang_code'));
+
         $organizers = Organizer::all();
-        
-        $language = Language::where([
-            'iso_code' => $iso_code
-        ])
-        ->first();
-     
-        foreach($organizers as $key =>$organizer){
+
+        foreach ($organizers as $key => $organizer) {
             $organizer_language = Organizer::find($organizer->id)
                 ->languages()
                 ->where('language_id', $language->id)
                 ->get();
 
             $orga[$key] = [
-            'id' => $organizer->id,
-            'portrait' => $organizer->portrait,
-            'email' => $organizer->email,
-            'phone' => $organizer->phone,
-            'website' => $organizer->website
+                'id' => $organizer->id,
+                'portrait' => $organizer->portrait,
+                'email' => $organizer->email,
+                'phone' => $organizer->phone,
+                'website' => $organizer->website
             ];
 
-            if(count($organizer_language)>0){
-                $orga[$key] =Arr::add($orga[$key],'name',$organizer_language[0]->pivot->name);
-                $orga[$key] =Arr::add($orga[$key],'description',$organizer_language[0]->pivot->description);
-            }else{
-                $orga[$key] =Arr::add($orga[$key],'name','');
-                $orga[$key] =Arr::add($orga[$key],'description','');
+            if (count($organizer_language) > 0) {
+                $orga[$key] = Arr::add($orga[$key], 'name', $organizer_language[0]->pivot->name);
+                $orga[$key] = Arr::add($orga[$key], 'description', $organizer_language[0]->pivot->description);
+            } else {
+                $orga[$key] = Arr::add($orga[$key], 'name', '');
+                $orga[$key] = Arr::add($orga[$key], 'description', '');
             }
         }
- 
-        return response()->json([
-            'status' => 'ok',
-            'data' => $orga
-        ], 200);
+
+        return $this->sendResponse($orga, 'User register successfully.');
     }
 
     /**
@@ -65,11 +66,11 @@ class OrganizerController extends Controller
     public function store(StoreOrganizerRequest $request)
     {
         $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
-        
+
         $language = Language::where([
             'iso_code' => $iso_code
         ])
-        ->first();
+            ->first();
 
         $organizer = Organizer::create([
             'portrait' => $request->portrait,
@@ -102,14 +103,14 @@ class OrganizerController extends Controller
 
         $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
         $organizer = Organizer::where([
-                            'id' => $id
-                        ])
-                        ->with(['languages' => function($query) use ($iso_code) {
-                            $query->where('iso_code', $iso_code)->first();
-                        }])
-                        ->first();
+            'id' => $id
+        ])
+            ->with(['languages' => function ($query) use ($iso_code) {
+                $query->where('iso_code', $iso_code)->first();
+            }])
+            ->first();
 
-        if(count($organizer->languages) === 0)
+        if (count($organizer->languages) === 0)
             return response()->json([
                 'status' => 'error',
                 'message' => 'Organizer doesn\'t not have translation in that language.'
@@ -144,16 +145,16 @@ class OrganizerController extends Controller
     {
 
         $iso_code = $request->input('iso_code') ?  $request->input('iso_code') : 'ro_MD';
-        
+
         $organizer = Organizer::where([
-                'id' => $request->input('organizer_id')
-            ])
-            ->with(['languages' => function($query) use ($iso_code) {
+            'id' => $request->input('organizer_id')
+        ])
+            ->with(['languages' => function ($query) use ($iso_code) {
                 $query->where('iso_code', $iso_code)->first();
             }])
             ->first();
 
-         $organizer->update([
+        $organizer->update([
             'portrait' => $request->input('portrait'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
@@ -170,7 +171,7 @@ class OrganizerController extends Controller
 
         return response()->json([
             'status' => 'ok',
-            'message'=> "Organizer ${organizer_updated} updated succesfully"
+            'message' => "Organizer ${organizer_updated} updated succesfully"
         ], 200);
     }
 
@@ -183,7 +184,7 @@ class OrganizerController extends Controller
     public function destroy($id)
     {
         $organizer = Organizer::destroy($id);
-        
+
         if ($organizer) {
             return response()->json([
                 "status" => "ok",
