@@ -61,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function organizers()
     {
-        return $this->belongsToMany(Organizer::class, 'members', 'user_id', 'organizer_id');
+        return $this->belongsToMany(Organizer::class, 'members');
     }
 
     public function isConfig(): bool

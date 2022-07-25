@@ -30,7 +30,8 @@ class StoreOrganizerRequest extends FormRequest
             'description' => 'string|required',
             'email' => 'string|required|email|unique:organizers',
             'phone' => 'string|required',
-            'website' => 'string'
+            'website' => 'string',
+            'organizer_user_id' => 'numeric|required|exists:App\Models\User,id'
         ];
     }
 }
