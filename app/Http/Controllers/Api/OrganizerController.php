@@ -7,6 +7,7 @@ use App\Http\Requests\Organizer\StoreOrganizerRequest;
 use App\Http\Requests\Organizer\UpdateOrganizerRequest;
 use App\Http\Requests\LangRequest;
 use App\Models\Organizer;
+use App\Models\User;
 
 class OrganizerController extends ApiController
 {
@@ -49,22 +50,28 @@ class OrganizerController extends ApiController
     {
         $language = $this->getLanguageModel($request->input('lang_code'));
 
-        $organizer = Organizer::create([
-            'portrait' => $request->portrait,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'website' => $request->website,
-            'user_id' => $request->user_id,
-            'created_user_id' =>  $request->created_user_id,
-            'modified_user_id' => $request->modified_user_id
-        ]);
+        $input = $request->only(['portrait', 'email', 'phone', 'website']);
+        $input['user_id'] = $request->input('organizer_user_id');
 
+        $user = $this->getUser();
+        $input['created_user_id'] = $user->id;
+        $input['modified_user_id'] = $user->id;
+
+        if ($user->id !== $input['user_id']) {
+            $user = User::find($input['user_id']);
+        }
+
+        $organizer = Organizer::create($input);
+        $organizer->members()->attach($user, [
+            'created_user_id' => $input['created_user_id'],
+            'modified_user_id' => $input['modified_user_id']
+        ]);
         $organizer->languages()->attach($language, [
             'name' => $request->name,
             'description' => $request->description,
         ]);
 
-        return $this->sendResponse($organizer, 'User register successfully.');
+        return $this->sendResponse($organizer, 'Orde successfully.');
     }
     /**
      * Store a newly traduction created resource in storage.
@@ -72,7 +79,7 @@ class OrganizerController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeOrganizerTranslation(StoreTranslationOrganizerRequest $request)
+    public function storeTranslation(StoreTranslationOrganizerRequest $request)
     {
         $language = $this->getLanguageModel($request->input('lang_code'));
 
