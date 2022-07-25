@@ -37,6 +37,10 @@ class Organizer extends Model
             ->withPivot('organizer_id', 'name', 'description')
             ->withTimestamps();
     }
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'members');
+    }
 
     public function events()
     {

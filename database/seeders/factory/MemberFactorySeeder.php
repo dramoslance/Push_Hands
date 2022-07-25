@@ -21,7 +21,7 @@ class MemberFactorySeeder extends Seeder
          
          $user = User::factory()->create();
          foreach($organizers as $organizer){
-             $organizer->users()->attach($user ,[]);
+             $organizer->members()->attach($user ,[]);
          }
     }
 }
