@@ -62,7 +62,8 @@ class Organizer extends Model
     {
         return $query->join('organizers_languages as ol', 'organizers.id', 'ol.organizer_id')
             ->join('languages as lang', 'lang.id', 'ol.language_id')
-            // ->select('ol.name')
+            ->select('ol.organizer_id','organizers.portrait','organizers.portrait',
+            'organizers.email','organizers.phone','organizers.website','ol.language_id','lang.iso_code','ol.name','ol.description')
             ->when(request('lang_code') !== null, function ($q) {
                 return $q->where('lang.iso_code', request('lang_code'));
             })

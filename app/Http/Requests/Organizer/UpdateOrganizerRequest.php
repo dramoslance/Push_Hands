@@ -29,7 +29,7 @@ class UpdateOrganizerRequest extends FormRequest
             'name' => 'string|required',
             'description' => 'string|required',
             'email' => 'string|required|email|unique:organizers,email,'. $this->organizer_id,
-            'phone' => 'string|required|unique:organizers,phone,'.$this->organizer_id,
+            'phone' => 'string|required',
             'website' => 'string'
         ];
     }
