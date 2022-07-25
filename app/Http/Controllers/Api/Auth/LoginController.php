@@ -11,9 +11,11 @@ class LoginController extends ApiController
     public function store(Request $request)
     {
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $user = Auth::User();
+            $user = $this->getUser();
             $success['token'] =  $user->createToken('MyApp')->accessToken;
-            $success['name'] =  $user->name;
+            $success['user'] =  $user;
+            $success['roles'] = $user->getRoleNames();
+            $success['permissions'] = $user->getDirectPermissions();
             return $this->sendResponse($success, 'User login successfully.');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);

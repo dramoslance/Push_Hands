@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Interface\RolePermission\RolesEntity;
+use Interface\RolePermission\PermissionsEntity;
 use App\Models\User;
 
 class RegisterController extends ApiController
@@ -26,10 +29,20 @@ class RegisterController extends ApiController
         }
 
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
+        $input['password'] = Hash::make($input['password']);
+
         $user = User::create($input);
+
+        $user->assignRole(RolesEntity::USER);
+        $user->givePermissionTo(PermissionsEntity::USER_READ);
+        $user->givePermissionTo(PermissionsEntity::USER_WRITE);
+
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
+        $success['lastname'] =  $user->lastname;
+        $success['email'] =  $user->email;
+        $success['username'] =  $user->username;
+        $success['email_verified_at'] =  $user->email_verified_at;
 
         return $this->sendResponse($success, 'User register successfully.');
     }
