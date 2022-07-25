@@ -25,7 +25,7 @@ class RoleController extends ApiController
     {
         $user = $this->getUser();
         return $this->sendResponse(
-            ['permissions' => $user->getRoleNames()],
+            ['role' => $user->getRoleNames()],
             'User roles.'
         );
     }
@@ -44,16 +44,10 @@ class RoleController extends ApiController
             return $this->sendError('Error: unable to assign super admin role.');
         }
 
-        // $userAssignRole = User::find($request->user_id);
-
-        // if (empty($userAssignRole)) {
-        //     return $this->sendError('Error: user not found.');
-        // }
-
         $user = $this->getUser();
         $user->assignRole($rolName);
         return $this->sendResponse(
-            ['permissions' => $user->getRoleNames()],
+            ['role' => $user->getRoleNames()],
             'User roles.'
         );
     }
@@ -77,7 +71,7 @@ class RoleController extends ApiController
         $user = $this->getUser();
         $user->removeRole($rolName);
         return $this->sendResponse(
-            ['permissions' => $user->getRoleNames()],
+            ['role' => $user->getRoleNames()],
             'User roles.'
         );
     }
