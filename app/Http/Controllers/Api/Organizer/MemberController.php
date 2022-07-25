@@ -32,7 +32,7 @@ class MemberController extends ApiController
         return $this->sendResponse($organizer, 'Member of organizer successfully');
     }
 
-    public function update()
+    public function destroy(int $id)
     {
     }
 }
