@@ -17,5 +17,8 @@ Route::group(['middleware' => ['role:admin', 'auth:api']], function () {
     Route::delete('/{id}', [DestroyController::class, 'destroy'])->name('organizer.destroy');
 
     Route::post('/translation', [TranslationController::class, 'store'])->name('organizer.translation.store');
+    Route::delete('/translation/{id}', [TranslationController::class, 'destroy'])->name('organizer.translation.destroy');
+
     Route::post('/member', [MemberController::class, 'store'])->name('organizer.member.store');
+    Route::delete('/translation/{id}', [MemberController::class, 'destroy'])->name('organizer.member.destroy');
 });
