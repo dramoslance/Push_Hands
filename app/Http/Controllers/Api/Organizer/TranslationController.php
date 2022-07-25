@@ -25,7 +25,7 @@ class TranslationController extends ApiController
         return $this->sendResponse($organizer, 'Translation of organization created successfully');
     }
 
-    public function update()
+    public function destroy(int $id)
     {
     }
 }
