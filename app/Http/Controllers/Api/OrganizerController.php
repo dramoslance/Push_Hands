@@ -70,8 +70,10 @@ class OrganizerController extends ApiController
             'name' => $request->name,
             'description' => $request->description,
         ]);
-
-        return $this->sendResponse($organizer, 'Orde successfully.');
+        $organizer['name'] = $request->name;
+        $organizer['description'] = $request->description;
+        
+        return $this->sendResponse($organizer, 'Organizer create successfully.');
     }
     /**
      * Store a newly traduction created resource in storage.
